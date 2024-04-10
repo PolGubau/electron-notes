@@ -19,7 +19,7 @@ const msiCreator = new MSICreator({
   // Configure metadata
   description: 'A notes app built with Electron by Pol Gubau Amores',
   exe: 'notes',
-  name: 'Notes by Pol :)',
+  name: 'Notes by Pol',
   manufacturer: 'PolGubau',
   language: 1033,
   version: '1.0.0',

@@ -1,9 +1,9 @@
-import { ActionButton, ActionButtonProps } from '@/components'
 import { deleteNoteAtom } from '@/store'
 import { useSetAtom } from 'jotai'
-import { FaRegTrashCan } from 'react-icons/fa6'
+import { ColorsEnum, IconButton, IconButtonProps } from 'pol-ui'
+import { TbTrash } from 'react-icons/tb'
 
-export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
+export const DeleteNoteButton = ({ ...props }: IconButtonProps) => {
   const deleteNote = useSetAtom(deleteNoteAtom)
 
   const handleDelete = async () => {
@@ -11,8 +11,8 @@ export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   }
 
   return (
-    <ActionButton onClick={handleDelete} {...props}>
-      <FaRegTrashCan className="w-4 h-4 text-zinc-300" />
-    </ActionButton>
+    <IconButton onClick={handleDelete} {...props} color={ColorsEnum.error}>
+      <TbTrash />
+    </IconButton>
   )
 }

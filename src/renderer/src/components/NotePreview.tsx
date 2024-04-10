@@ -1,7 +1,7 @@
-import { cn, formatDateFromMs } from '@renderer/utils'
+import { formatDateFromMs } from '@renderer/utils'
 import { NoteInfo } from '@shared/models'
+import { cn } from 'pol-ui'
 import { ComponentProps } from 'react'
-
 export type NotePreviewProps = NoteInfo & {
   isActive?: boolean
 } & ComponentProps<'div'>

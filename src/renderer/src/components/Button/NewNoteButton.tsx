@@ -1,9 +1,9 @@
-import { ActionButton, ActionButtonProps } from '@/components'
 import { createEmptyNoteAtom } from '@renderer/store'
 import { useSetAtom } from 'jotai'
-import { LuFileSignature } from 'react-icons/lu'
+import { ColorsEnum, IconButton, IconButtonProps } from 'pol-ui'
+import { TbPlus } from 'react-icons/tb'
 
-export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
+export const NewNoteButton = ({ ...props }: IconButtonProps) => {
   const createEmptyNote = useSetAtom(createEmptyNoteAtom)
 
   const handleCreation = async () => {
@@ -11,8 +11,8 @@ export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
   }
 
   return (
-    <ActionButton onClick={handleCreation} {...props}>
-      <LuFileSignature className="w-4 h-4 text-zinc-300" />
-    </ActionButton>
+    <IconButton color={ColorsEnum.secondary} onClick={handleCreation} {...props}>
+      <TbPlus />
+    </IconButton>
   )
 }

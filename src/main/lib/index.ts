@@ -9,7 +9,7 @@ import path from 'path'
 import welcomeNoteFile from '../../../resources/welcomeNote.md?asset'
 
 export const getRootDir = () => {
-  return `${homedir()}/${appDirectoryName}`
+  return `${homedir()}/pol-apps/${appDirectoryName}`
 }
 
 export const getNotes: GetNotes = async () => {
@@ -73,6 +73,7 @@ export const createNote: CreateNote = async () => {
     showsTagField: false,
     filters: [{ name: 'Markdown', extensions: ['md'] }]
   })
+  console.log(filePath)
 
   if (canceled || !filePath) {
     console.info('Note creation canceled')
@@ -80,12 +81,22 @@ export const createNote: CreateNote = async () => {
   }
 
   const { name: filename, dir: parentDir } = path.parse(filePath)
+  console.log('parentDir', parentDir)
+  console.log('rootDir', rootDir)
 
-  if (parentDir !== rootDir) {
+  // In windows some problems could occur because rootDir uses \ and parentDir uses /, so we need to replace them
+
+  const normalizeSlashes = (str: string) => str.replace(/\\/g, '/')
+
+  const parentDirNormalized = normalizeSlashes(parentDir)
+
+  const rootDirNormalized = normalizeSlashes(rootDir)
+
+  if (parentDirNormalized !== rootDirNormalized) {
     await dialog.showMessageBox({
       type: 'error',
       title: 'Creation failed',
-      message: `All notes must be saved under ${rootDir}.
+      message: `All notes must be saved under "${rootDir}".
       Avoid using other directories!`
     })
 

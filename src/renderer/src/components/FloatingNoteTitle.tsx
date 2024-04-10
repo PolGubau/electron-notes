@@ -10,7 +10,7 @@ export const FloatingNoteTitle = ({ className, ...props }: ComponentProps<'div'>
 
   return (
     <div className={cn('flex justify-center', className)} {...props}>
-      <span className="text-gray-400">{selectedNote.title}</span>
+      <span className="text-secondary">{selectedNote.title}</span>
     </div>
   )
 }

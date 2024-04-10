@@ -4,6 +4,7 @@ declare global {
   interface Window {
     // electron: ElectronAPI
     context: {
+      geolocation: Geolocation
       locale: string
       getNotes: GetNotes
       readNote: ReadNote

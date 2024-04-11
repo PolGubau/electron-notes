@@ -1,5 +1,5 @@
 import { MDXEditorMethods } from '@mdxeditor/editor'
-import { saveNoteAtom, selectedNoteAtom } from '@renderer/store'
+import { saveNoteAtom, selectedNoteAtom } from '@renderer/store/store'
 import { autoSavingTime } from '@shared/constants'
 import { NoteContent } from '@shared/models'
 import { useAtomValue, useSetAtom } from 'jotai'

@@ -1,4 +1,4 @@
-import { deleteNoteAtom } from '@/store'
+import { deleteNoteAtom } from '@renderer/store/store'
 import { useSetAtom } from 'jotai'
 import { ColorsEnum, IconButton, IconButtonProps } from 'pol-ui'
 import { TbTrash } from 'react-icons/tb'

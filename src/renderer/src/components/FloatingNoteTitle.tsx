@@ -1,4 +1,4 @@
-import { selectedNoteAtom } from '@renderer/store'
+import { selectedNoteAtom } from '@renderer/store/store'
 import { useAtomValue } from 'jotai'
 import { cn } from 'pol-ui'
 import { ComponentProps } from 'react'

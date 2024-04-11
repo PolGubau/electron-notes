@@ -1,4 +1,4 @@
-import { createEmptyNoteAtom } from '@renderer/store'
+import { createEmptyNoteAtom } from '@renderer/store/store'
 import { useSetAtom } from 'jotai'
 
 const useNote = () => {

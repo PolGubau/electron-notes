@@ -18,7 +18,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup
 } from './components/ui/resizeable/resizeable'
-import { selectedNoteAtom } from './store'
+import { selectedNoteAtom } from './store/store'
 
 const App = () => {
   const contentContainerRef = useRef<HTMLDivElement>(null)

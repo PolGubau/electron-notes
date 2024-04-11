@@ -3,14 +3,20 @@
 @tailwind utilities;
 @font-face {
   font-family: 'Poppins';
-  src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+  src: url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
 }
-
 @layer base {
   #root {
     @apply h-full;
   }
-
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  }
   html,
   body {
     @apply h-full;
@@ -42,13 +48,5 @@
 
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: 'Poppins', sans-serif;
   }
 }

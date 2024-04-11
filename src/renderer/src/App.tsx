@@ -1,18 +1,16 @@
 import {
-  ActionButtonsRow,
   Content,
   DraggableTopBar,
   EmptyNote,
   FloatingNoteTitle,
   MarkdownEditor,
-  NotePreviewList,
   RootLayout,
-  SearchInNotes,
   Sidebar
 } from '@/components'
 import { useAtomValue } from 'jotai'
 import { PoluiProvider } from 'pol-ui'
 import { useRef } from 'react'
+import TitleInput from './components/title-input/title-input'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -22,7 +20,6 @@ import { selectedNoteAtom } from './store/store'
 
 const App = () => {
   const contentContainerRef = useRef<HTMLDivElement>(null)
-
   const resetScroll = () => {
     contentContainerRef.current?.scrollTo(0, 0)
   }
@@ -35,10 +32,7 @@ const App = () => {
         <RootLayout>
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={30} minSize={20}>
-              <Sidebar className="p-2">
-                <ActionButtonsRow className="flex justify-between mt-1 w-full" />
-                <NotePreviewList className="mt-3 space-y-1" onSelect={resetScroll} />
-              </Sidebar>
+              <Sidebar resetScroll={resetScroll} />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={70} minSize={40}>
@@ -49,7 +43,7 @@ const App = () => {
                 {selectedNote ? (
                   <>
                     <FloatingNoteTitle className="pt-2" />
-                    <SearchInNotes />
+                    <TitleInput value={selectedNote.title} />
                     <MarkdownEditor />
                   </>
                 ) : (

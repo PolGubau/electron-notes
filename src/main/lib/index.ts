@@ -1,6 +1,14 @@
 import { appDirectoryName, fileEncoding, welcomeNoteFilename } from '@shared/constants'
 import { NoteInfo } from '@shared/models'
-import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
+import {
+  CreateNote,
+  DeleteNote,
+  DuplicateNote,
+  GetNotes,
+  ReadNote,
+  RenameNote,
+  WriteNote
+} from '@shared/types'
 import { dialog } from 'electron'
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import { isEmpty } from 'lodash'
@@ -60,29 +68,52 @@ export const writeNote: WriteNote = async (filename, content) => {
   return writeFile(`${rootDir}/${filename}.md`, content, { encoding: fileEncoding })
 }
 
-export const createNote: CreateNote = async () => {
+export const createNote: CreateNote = async (title?: string) => {
   const rootDir = getRootDir()
 
   await ensureDir(rootDir)
 
-  const { filePath, canceled } = await dialog.showSaveDialog({
-    title: 'New note',
-    defaultPath: `${rootDir}/Untitled.md`,
-    buttonLabel: 'Create',
-    properties: ['showOverwriteConfirmation'],
-    showsTagField: false,
-    filters: [{ name: 'Markdown', extensions: ['md'] }]
-  })
-  console.log(filePath)
+  const getNewNotePath = async () => {
+    // create a new note called untitled but if it already exists, create a new note with a number suffix
 
-  if (canceled || !filePath) {
-    console.info('Note creation canceled')
+    const name = title ?? 'Untitled'
+
+    const newNotePath = `${rootDir}/${name}.md`
+    const isPathExists = await stat(newNotePath).catch(() => false)
+
+    if (!isPathExists) {
+      return newNotePath
+    }
+
+    let i = 1
+    while (i <= 1000) {
+      const newNotePath = `${rootDir}/Untitled-${i}.md`
+      const isPathExists = await stat(newNotePath).catch(() => false)
+
+      if (!isPathExists) {
+        return newNotePath
+      }
+
+      i++
+
+      if (i > 1000) {
+        throw new Error('Too many notes with the same name')
+      }
+    }
     return false
   }
+  const filePath = await getNewNotePath()
 
+  if (!filePath) {
+    dialog.showErrorBox(
+      'Creation failed',
+      `All notes must be saved under ${
+        rootDir.endsWith('/') ? rootDir : `${rootDir}/`
+      }. Avoid using other directories!`
+    )
+    return false
+  }
   const { name: filename, dir: parentDir } = path.parse(filePath)
-  console.log('parentDir', parentDir)
-  console.log('rootDir', rootDir)
 
   // In windows some problems could occur because rootDir uses \ and parentDir uses /, so we need to replace them
 
@@ -104,7 +135,7 @@ export const createNote: CreateNote = async () => {
   }
 
   console.info(`Creating note: ${filePath}`)
-  await writeFile(filePath, '')
+  await writeFile(filePath, 'Edit me!', { encoding: fileEncoding })
 
   return filename
 }
@@ -128,5 +159,42 @@ export const deleteNote: DeleteNote = async (filename) => {
 
   console.info(`Deleting note: ${filename}`)
   await remove(`${rootDir}/${filename}.md`)
+  return true
+}
+
+export const duplicateNote: DuplicateNote = async (filename) => {
+  const rootDir = getRootDir()
+
+  const newFilename = `${filename}-copy`
+
+  console.info(`Duplicating note: ${filename} to ${newFilename}`)
+  await writeFile(`${rootDir}/${newFilename}.md`, await readNote(filename), {
+    encoding: fileEncoding
+  })
+
+  return newFilename
+}
+
+export const renameNote: RenameNote = async (oldFilename: string, newFilename: string) => {
+  // take the note with the old name and rename it to the new name, if the name already exists, return false
+
+  const rootDir = getRootDir()
+
+  const oldPath = `${rootDir}/${oldFilename}.md`
+  const newPath = `${rootDir}/${newFilename}.md`
+
+  const isPathExists = await stat(newPath).catch(() => false)
+
+  if (isPathExists) {
+    dialog.showErrorBox('Rename failed', `A note with the name ${newFilename} already exists`)
+    return false
+  }
+
+  console.info(`Renaming note: ${oldFilename} to ${newFilename}`)
+  writeFile(newPath, await readNote(oldFilename), { encoding: fileEncoding })
+
+  // delete the old note
+
+  await remove(oldPath)
   return true
 }

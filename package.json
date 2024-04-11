@@ -1,6 +1,11 @@
 {
   "name": "notes-electron",
   "version": "1.0.0",
+  "author": {
+    "name": "Pol Gubau Amores",
+    "email": "gubaupol@gmail.com",
+    "url": "https://www.polgubau.com"
+  },
   "description": "A simple note-taking app by Pol Gubau Amores",
   "license": "MIT",
   "main": "./out/main/index.js",

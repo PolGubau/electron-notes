@@ -17,13 +17,12 @@ export const NotePreview = ({
 
   return (
     <Button
-      disabled={isActive}
-      innerClassname="text-secondary-50 w-full align-normal justify-normal items-start flex flex-col opacity-100 transition-color"
+      innerClassname="text-secondary-50 w-full align-normal justify-normal items-start flex flex-col transition-color "
       color={ColorsEnum.secondary}
       className={cn(
         'cursor-pointer p-1.5 w-full',
         {
-          'bg-transparent ': !isActive,
+          'bg-secondary-900/90 ': !isActive,
           'bg-secondary-100 dark:bg-secondary-700 text-white cursor-default': isActive
         },
 
@@ -36,4 +35,3 @@ export const NotePreview = ({
     </Button>
   )
 }
-

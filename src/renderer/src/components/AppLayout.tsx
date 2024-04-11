@@ -11,7 +11,7 @@ export const RootLayout = ({ children, className, ...props }: ComponentProps<'ma
 
 export const Sidebar = ({ className, children, ...props }: ComponentProps<'aside'>) => {
   return (
-    <aside className={cn('w-[250px] h-[100vh + 10px] overflow-auto ', className)} {...props}>
+    <aside className={cn('w-full h-[100vh + 10px] overflow-auto ', className)} {...props}>
       {children}
     </aside>
   )
@@ -19,7 +19,7 @@ export const Sidebar = ({ className, children, ...props }: ComponentProps<'aside
 
 export const Content = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ children, className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex-1 overflow-auto', className)} {...props}>
+    <div ref={ref} className={cn('flex-1 overflow-auto h-full', className)} {...props}>
       {children}
     </div>
   )

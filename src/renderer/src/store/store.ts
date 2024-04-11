@@ -107,7 +107,8 @@ export const createEmptyNoteAtom = atom(null, async (get, set) => {
 
   const newNote: NoteInfo = {
     title,
-    lastEditTime: Date.now()
+    lastEditTime: Date.now(),
+    size: 0
   }
 
   set(notesAtom, [newNote, ...notes.filter((note) => note.title !== newNote.title)])
@@ -158,9 +159,12 @@ export const duplicateNoteAtom = atom(null, async (get, set, title: string) => {
 
   const newTitle = await window.context.duplicateNote(title) // duplicate the note and get the new title
   if (!newTitle) return
+
+  const { title: oldTitle, lastEditTime, ...rest } = note // get the rest of the note properties
   const newNote: NoteInfo = {
     title: newTitle,
-    lastEditTime: Date.now()
+    lastEditTime: Date.now(),
+    ...rest
   }
   set(notesAtom, [newNote, ...notes])
   set(selectedNoteIndexAtom, 0)

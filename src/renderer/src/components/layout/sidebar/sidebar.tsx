@@ -19,10 +19,7 @@ export const Sidebar = ({ className, resetScroll, ...props }: SidebarProps) => {
             <TbPlus />
           </IconButton>
         </header>
-        <NotePreviewList
-          className="divide-y divide-secondary-200 dark:divide-secondary-700 border-y border-secondary-200 dark:border-secondary-700"
-          onSelect={resetScroll}
-        />{' '}
+        <NotePreviewList onSelect={resetScroll} />
       </div>
     </aside>
   )

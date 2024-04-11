@@ -1,8 +1,8 @@
-import { NotePreview } from '@/components'
 import { useNotesList } from '@/hooks/useNotesList'
 import { isEmpty } from 'lodash'
 import { cn } from 'pol-ui'
 import { ComponentProps } from 'react'
+import { NotePreview } from './note-preview'
 
 export type NotePreviewListProps = ComponentProps<'ul'> & {
   onSelect?: () => void
@@ -22,15 +22,23 @@ export const NotePreviewList = ({ onSelect, className, ...props }: NotePreviewLi
   }
 
   return (
-    <ul className={className} {...props}>
-      {notes.map((note, index) => (
-        <NotePreview
-          key={note.title + note.lastEditTime}
-          isActive={selectedNoteIndex === index}
-          onClick={handleNoteSelect(index)}
-          {...note}
-        />
-      ))}
+    <ul
+      className={cn(
+        'divide-y divide-secondary-200 dark:divide-secondary-700 border-y border-secondary-200 dark:border-secondary-700',
+        className
+      )}
+      {...props}
+    >
+      {notes.map((note, index) => {
+        return (
+          <NotePreview
+            key={note.title}
+            {...note}
+            isActive={index === selectedNoteIndex}
+            onClick={handleNoteSelect(index)}
+          />
+        )
+      })}
     </ul>
   )
 }

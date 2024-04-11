@@ -1,24 +1,26 @@
 import useNote from '@renderer/hooks/useNote'
 import { formatDateFromMs } from '@renderer/utils'
 import { NoteInfo } from '@shared/models'
-import { ButtonProps, ColorsEnum, IconButton, Popover, cn } from 'pol-ui'
-import useRipple from 'pol-ui/lib/esm/hooks/use-ripple/use-ripple'
+import { ColorsEnum, IconButton, OverrideProps, Popover, cn } from 'pol-ui'
+import React from 'react'
 import { TbDotsVertical } from 'react-icons/tb'
-export type NotePreviewProps = NoteInfo & {
-  isActive?: boolean
-} & ButtonProps
+export type NotePreviewProps = OverrideProps<
+  React.HTMLAttributes<HTMLButtonElement>,
+  NoteInfo & {
+    isActive: boolean
+  }
+>
 
 export const NotePreview = ({
   title,
-  content,
   lastEditTime,
   isActive = false,
-  className,
   ...props
 }: NotePreviewProps) => {
   const date = formatDateFromMs(lastEditTime)
-  const [ref, event] = useRipple()
+
   const { deleteNoteByTitle, duplicateNote } = useNote()
+
   const deleteNote = () => {
     deleteNoteByTitle(title)
   }
@@ -28,21 +30,14 @@ export const NotePreview = ({
 
   return (
     <li
-      ref={ref}
-      {...event}
       className={cn('flex items-center gap-1 p-1', {
         'bg-transparent': !isActive,
         'bg-secondary-100 dark:bg-secondary-700 text-white cursor-default': isActive
       })}
     >
       <button
-        onClick={props.onClick}
         color={ColorsEnum.secondary}
-        className={cn(
-          'cursor-pointer p-1.5 w-full text-start',
-
-          className
-        )}
+        className={cn('cursor-pointer p-1.5 w-full text-start', props.className)}
         {...props}
       >
         <h3 className="font-bold truncate">{title}</h3>
